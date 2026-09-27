@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Invoice Studio — Professional Invoice Generator</title>
+<style>
+:root{--p:#3157d5;--p2:#203b9b;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#6d7688;--line:#e3e8f1;--good:#15956a;--warn:#d98916;--bad:#d64545;--shadow:0 12px 35px rgba(25,42,75,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.topbar{background:linear-gradient(135deg,#17275d,#3157d5);color:#fff;padding:18px 22px;position:sticky;top:0;z-index:20;box-shadow:0 5px 22px rgba(20,40,90,.18)}
+.topin{max-width:1450px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{display:flex;align-items:center;gap:12px}.brandmark{width:43px;height:43px;border-radius:13px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-weight:900;font-size:20px;border:1px solid rgba(255,255,255,.2)}.brand h1{font-size:20px;margin:0}.brand small{opacity:.75}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;transition:.15s}.btn:hover{transform:translateY(-1px)}.btn-light{background:#fff;color:#203b9b}.btn-soft{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-primary{background:var(--p);color:#fff}.btn-danger{background:#fff1f1;color:#b52f2f}.btn-outline{background:#fff;border:1px solid var(--line);color:var(--text)}
+.layout{max-width:1450px;margin:22px auto;display:grid;grid-template-columns:minmax(420px,1fr) minmax(430px,760px);gap:22px;padding:0 18px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.panelhead{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.panelhead h2{font-size:16px;margin:0}.panelhead p{font-size:12px;color:var(--muted);margin:4px 0 0}.body{padding:18px 20px}
+.section{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;background:#fff;overflow:hidden}.sectitle{padding:13px 15px;background:#fafbfe;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}.num{width:25px;height:25px;border-radius:8px;background:#eaf0ff;color:var(--p);display:grid;place-items:center;font-size:12px}.sectitle span:last-child{margin-left:auto;color:#a1a9b8;font-size:11px;font-weight:600}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:15px}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:800;color:#4f586a}.field input,.field textarea,.field select{width:100%;border:1px solid #dce2ec;background:#fff;border-radius:9px;padding:10px 11px;outline:none;color:var(--text);font-size:13px}.field input:focus,.field textarea:focus,.field select:focus{border-color:#7e98e9;box-shadow:0 0 0 3px #eaf0ff}.field input::placeholder,.field textarea::placeholder{color:#aeb6c4}.field textarea{min-height:72px;resize:vertical}
+.upload{border:1px dashed #bcc7da;border-radius:10px;padding:10px;text-align:center;background:#fafcff;color:var(--muted);font-size:11px}.upload input{padding:5px;border:0;background:transparent}.preview-img{max-height:50px;max-width:130px;margin:6px auto 0;display:block;object-fit:contain}
+.items{padding:15px}.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fbfcff}.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.itemtop strong{font-size:12px}.remove{border:0;background:#fff0f0;color:#c23a3a;border-radius:8px;padding:5px 8px;font-weight:800}.itemgrid{display:grid;grid-template-columns:2fr .65fr 1fr .8fr;gap:8px}.itemgrid input{width:100%;padding:9px;border:1px solid #dce2ec;border-radius:8px}.itemfoot{display:flex;justify-content:flex-end;font-size:12px;font-weight:800;margin-top:8px}.add{width:100%;border:1px dashed #9eb1e8;background:#f7f9ff;color:var(--p);padding:10px;border-radius:9px;font-weight:800}
+.preview-wrap{padding:14px;background:#eef2f8;min-height:700px}.invoice{background:#fff;max-width:720px;margin:0 auto;box-shadow:0 8px 28px rgba(30,45,75,.13);min-height:900px;padding:38px;color:#202633}.invhead{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #202633;padding-bottom:20px}.seller{display:flex;gap:13px}.logo{width:64px;height:64px;border-radius:10px;object-fit:contain;border:1px solid #e5e8ee}.seller h2{margin:0 0 4px;font-size:21px}.seller p,.meta p{margin:2px 0;color:#687182;font-size:10px;line-height:1.45}.meta{text-align:right}.meta h1{margin:0 0 8px;font-size:25px;letter-spacing:.5px}.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:9px;font-weight:900;margin-top:5px;background:#edf7f2;color:var(--good)}.customer{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:18px 0}.customer h4,.summary h4{margin:0 0 5px;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8992a1}.customer p{font-size:11px;margin:2px 0}.invtable{width:100%;border-collapse:collapse;font-size:10px}.invtable th{background:#f1f4f8;text-align:left;padding:8px}.invtable td{padding:9px 8px;border-bottom:1px solid #e8ebf0;vertical-align:middle}.prodimg{width:34px;height:34px;object-fit:cover;border-radius:6px;border:1px solid #eee}.right{text-align:right}.summary{display:grid;grid-template-columns:1fr 230px;gap:30px;margin-top:20px}.totals{font-size:11px}.tr{display:flex;justify-content:space-between;padding:4px 0}.grand{border-top:1px solid #222;margin-top:6px;padding-top:9px;font-size:15px;font-weight:900}.words{margin-top:15px;padding:10px;background:#f7f8fa;font-size:10px;border-radius:7px}.bottom{display:grid;grid-template-columns:1fr 170px;gap:30px;margin-top:28px}.notes{font-size:10px;line-height:1.5;color:#606979}.sign{text-align:center;font-size:9px;color:#70798a}.sign img{height:55px;max-width:150px;object-fit:contain;display:block;margin:auto}.foot{text-align:center;margin-top:35px;padding-top:12px;border-top:1px solid #e8ebf0;color:#8b94a3;font-size:9px}.empty{color:#9da6b4;font-style:italic}
+.hint{font-size:11px;color:var(--muted);margin:0 15px 13px}.switchrow{display:flex;gap:7px;flex-wrap:wrap;padding:0 15px 14px}.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:700}.chip.active{border-color:#8ea4e9;background:#eef2ff;color:var(--p)}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.preview-wrap{min-height:auto}.invoice{max-width:760px}}
+@media(max-width:650px){.topbar{position:static}.layout{padding:0 9px;margin:10px auto}.body,.panelhead{padding:14px}.grid,.grid3{grid-template-columns:1fr;padding:12px}.field.full{grid-column:auto}.itemgrid{grid-template-columns:1fr 1fr}.itemgrid input:first-child{grid-column:1/-1}.invoice{padding:20px;min-height:700px}.invhead{flex-direction:column}.meta{text-align:left}.customer,.summary,.bottom{grid-template-columns:1fr}.summary{gap:10px}.actions .btn{padding:8px 9px;font-size:11px}}
+@media print{body{background:#fff}.topbar,.editor,.no-print{display:none!important}.layout{display:block;margin:0;padding:0}.preview-wrap{padding:0;background:#fff}.invoice{box-shadow:none;max-width:none;margin:0;min-height:auto;padding:28px}.panel{border:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="topin">
+<div class="brand"><div class="brandmark">₹</div><div><h1>Invoice Studio</h1><small>Professional • Simple • Free</small></div></div>
+<div class="actions no-print">
+<button class="btn btn-soft" onclick="newInvoice()">↻ New</button>
+<button class="btn btn-soft" onclick="saveDraft()">💾 Save Draft</button>
+<button class="btn btn-light" onclick="window.print()">🖨 Save / Print PDF</button>
+</div>
+</div>
+</header>
+
+<main class="layout">
+<section class="panel editor">
+<div class="panelhead"><div><h2>Create Invoice</h2><p>Fill only what you need. Optional sections stay hidden.</p></div><button class="btn btn-danger" onclick="newInvoice()">Reset</button></div>
+<div class="body">
+
+<div class="section">
+<div class="sectitle"><div class="num">1</div>Business Details<span>Seller</span></div>
+<div class="grid">
+<div class="field"><label>Business / Your Name</label><input id="seller" placeholder="Enter Business Name"></div>
+<div class="field"><label>GSTIN <small>(optional)</small></label><input id="sgst" placeholder="Enter GSTIN"></div>
+<div class="field full"><label>Business Address</label><textarea id="saddr" placeholder="Enter complete business address"></textarea></div>
+<div class="field"><label>Phone</label><input id="sphone" placeholder="Enter Phone Number"></div>
+<div class="field"><label>Email <small>(optional)</small></label><input id="semail" placeholder="Enter Email Address"></div>
+<div class="field full"><label>Business Logo <small>(optional)</small></label><div class="upload"><input type="file" id="logoFile" accept="image/*" onchange="readImage(this,'logoData','logoPrev')"><div id="logoPrev"></div></div></div>
+</div></div>
+
+<div class="section">
+<div class="sectitle"><div class="num">2</div>Invoice Details<span>Document</span></div>
+<div class="grid grid3">
+<div class="field"><label>Invoice Number</label><input id="invno" placeholder="Enter Invoice Number"></div>
+<div class="field"><label>Invoice Date</label><input id="date" type="date"></div>
+<div class="field"><label>Due Date <small>(optional)</small></label><input id="due" type="date"></div>
+<div class="field"><label>Invoice Type</label><select id="type"><option>Tax Invoice</option><option>Estimate</option><option>Bill of Supply</option><option>Receipt</option></select></div>
+<div class="field"><label>GST Mode</label><select id="taxmode"><option value="none">No GST</option><option value="cgst">CGST + SGST</option><option value="igst">IGST</option></select></div>
+<div class="field"><label>Currency</label><select><option>₹ INR</option></select></div>
+</div></div>
+
+<div class="section">
+<div class="sectitle"><div class="num">3</div>Customer Details<span>Bill To</span></div>
+<div class="grid">
+<div class="field"><label>Customer Name</label><input id="customer" placeholder="Enter Customer Name"></div>
+<div class="field"><label>Customer GSTIN <small>(optional)</small></label><input id="cgstin" placeholder="Enter Customer GSTIN"></div>
+<div class="field full"><label>Customer Address <small>(optional)</small></label><textarea id="caddr" placeholder="Enter Customer Address"></textarea></div>
+<div class="field"><label>Customer Phone <small>(optional)</small></label><input id="cphone" placeholder="Enter Customer Phone"></div>
+<div class="field"><label>Customer Email <small>(optional)</small></label><input id="cemail" placeholder="Enter Customer Email"></div>
+</div></div>
+
+<div class="section">
+<div class="sectitle"><div class="num">4</div>Products / Services<span>Items</span></div>
+<p class="hint">Product image, HSN/SAC and discount are optional. Amount is calculated automatically.</p>
+<div id="items" class="items"></div>
+<div style="padding:0 15px 15px"><button class="add" onclick="addItem()">＋ Add Product / Service</button></div>
+</div>
+
+<div class="section">
+<div class="sectitle"><div class="num">5</div>Payment<span>Status</span></div>
+<div class="grid grid3">
+<div class="field"><label>Discount %</label><input id="discount" type="number" min="0" step="0.01" placeholder="Enter Discount %"></div>
+<div class="field"><label>GST %</label><input id="gst" type="number" min="0" step="0.01" placeholder="Enter GST %"></div>
+<div class="field"><label>Amount Paid</label><input id="paid" type="number" min="0" step="0.01" placeholder="Enter Amount Paid"></div>
+<div class="field"><label>Payment Method</label><select id="paymethod"><option value="">Select Payment Method</option><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Card</option><option>Cheque</option><option>Other</option></select></div>
+<div class="field"><label>UPI ID <small>(optional)</small></label><input id="upi" placeholder="Enter UPI ID"></div>
+<div class="field"><label>Bank / Account Info <small>(optional)</small></label><input id="bank" placeholder="Enter Bank / Account Details"></div>
+</div></div>
+
+<div class="section">
+<div class="sectitle"><div class="num">6</div>Extra Details<span>Optional</span></div>
+<div class="grid">
+<div class="field full"><label>Notes / Terms & Conditions</label><textarea id="notes" placeholder="Enter payment terms, return policy, thank-you note, etc."></textarea></div>
+<div class="field full"><label>Authorized Signature <small>(optional)</small></label><div class="upload"><input type="file" id="signFile" accept="image/*" onchange="readImage(this,'signData','signPrev')"><div id="signPrev"></div></div></div>
+</div></div>
+
+</div></section>
+
+<section class="panel">
+<div class="panelhead no-print"><div><h2>Live Invoice Preview</h2><p>What you see here is what gets printed / saved as PDF.</p></div><span id="statusTop" class="badge">PENDING</span></div>
+<div class="preview-wrap"><div class="invoice" id="invoice"></div></div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+let logoData="",signData="",items=[];
+const today=new Date().toISOString().slice(0,10);
+$("date").value=today;
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function money(n){return "₹"+Number(n||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function words(n){
+ n=Math.round(Number(n)||0); if(!n)return "Zero Rupees Only";
+ const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"],b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+ function two(x){return x<20?a[x]:b[Math.floor(x/10)]+(x%10?" "+a[x%10]:"")}
+ function part(x){return x<100?two(x):a[Math.floor(x/100)]+" Hundred"+(x%100?" "+two(x%100):"")}
+ let out=""; if(n>=10000000){out+=part(Math.floor(n/10000000))+" Crore ";n%=10000000} if(n>=100000){out+=part(Math.floor(n/100000))+" Lakh ";n%=100000} if(n>=1000){out+=part(Math.floor(n/1000))+" Thousand ";n%=1000} if(n)out+=part(n)+" "; return out.trim()+" Rupees Only";
+}
+function readImage(input,key,prev){
+ const f=input.files[0]; if(!f)return; const r=new FileReader();r.onload=e=>{window[key]=e.target.result;$(prev).innerHTML='<img class="preview-img" src="'+e.target.result+'">';render()};r.readAsDataURL(f)
+}
+function addItem(data={}){
+ const id=Date.now()+Math.random(); items.push({id,name:data.name||"",hsn:data.hsn||"",qty:data.qty||1,price:data.price||"",img:data.img||""});
+ renderItems();render()
+}
+function removeItem(id){items=items.filter(x=>x.id!==id);renderItems();render()}
+function itemChange(id,key,val){const x=items.find(i=>i.id===id);if(x){x[key]=val;render()}}
+function itemImage(id,input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{itemChange(id,"img",e.target.result);renderItems();render()};r.readAsDataURL(f)}
+function renderItems(){
+ $("items").innerHTML=items.length?items.map((x,i)=>`
+ <div class="item">
+  <div class="itemtop"><strong>Item ${i+1}</strong><button class="remove" onclick="removeItem(${x.id})">Remove</button></div>
+  <div class="itemgrid">
+   <input placeholder="Enter Product / Service Name" value="${esc(x.name)}" oninput="itemChange(${x.id},'name',this.value)">
+   <input placeholder="HSN/SAC" value="${esc(x.hsn)}" oninput="itemChange(${x.id},'hsn',this.value)">
+   <input type="number" min="0" step="0.01" placeholder="Qty" value="${esc(x.qty)}" oninput="itemChange(${x.id},'qty',this.value)">
+   <input type="number" min="0" step="0.01" placeholder="Enter Price" value="${esc(x.price)}" oninput="itemChange(${x.id},'price',this.value)">
+  </div>
+  <div style="margin-top:8px"><label style="font-size:10px;font-weight:800;color:#687182">Product Image (optional)</label><input type="file" accept="image/*" onchange="itemImage(${x.id},this)" style="width:100%;font-size:10px;margin-top:5px"></div>
+  <div class="itemfoot">Amount: ${money((Number(x.qty)||0)*(Number(x.price)||0))}</div>
+ </div>`).join(""):'<div class="empty" style="text-align:center;padding:18px">No products added yet. Click “Add Product / Service”.</div>';
+}
+function val(id){return $(id).value}
+function calc(){
+ let sub=items.reduce((s,x)=>s+(Number(x.qty)||0)*(Number(x.price)||0),0);
+ let disc=sub*(Number(val("discount"))||0)/100, taxable=Math.max(0,sub-disc), rate=Number(val("gst"))||0, tax=taxable*rate/100,total=taxable+tax,paid=Math.max(0,Number(val("paid"))||0),pending=Math.max(0,total-paid);
+ return {sub,disc,taxable,rate,tax,total,paid,pending}
+}
+function status(c){return c.pending<=.009?"PAID":c.paid>0?"PARTIALLY PAID":"PENDING"}
+function render(){
+ const c=calc(), st=status(c); $("statusTop").textContent=st;
+ $("statusTop").style.background=st==="PAID"?"#eaf8f1":st==="PARTIALLY PAID"?"#fff5e5":"#fff0f0";
+ $("statusTop").style.color=st==="PAID"?"#13815b":st==="PARTIALLY PAID"?"#ad6c0b":"#bb3535";
+ const mode=val("taxmode"), taxLines=mode==="cgst"?`<div class="tr"><span>CGST (${(c.rate/2).toFixed(2)}%)</span><span>${money(c.tax/2)}</span></div><div class="tr"><span>SGST (${(c.rate/2).toFixed(2)}%)</span><span>${money(c.tax/2)}</span></div>`:mode==="igst"?`<div class="tr"><span>IGST (${c.rate.toFixed(2)}%)</span><span>${money(c.tax)}</span></div>`:`<div class="tr"><span>GST</span><span>${money(c.tax)}</span></div>`;
+ $("invoice").innerHTML=`
+ <div class="invhead">
+  <div class="seller">${logoData?`<img class="logo" src="${logoData}">`:""}<div><h2>${esc(val("seller"))||"Your Business Name"}</h2><p>${esc(val("saddr"))||'<span class="empty">Business address</span>'}</p>${val("sgst")?`<p>GSTIN: ${esc(val("sgst"))}</p>`:""}${val("sphone")?`<p>Phone: ${esc(val("sphone"))}</p>`:""}${val("semail")?`<p>${esc(val("semail"))}</p>`:""}</div></div>
+  <div class="meta"><h1>${esc(val("type"))}</h1><p><b>Invoice #:</b> ${esc(val("invno"))||"—"}</p><p><b>Date:</b> ${val("date")||"—"}</p>${val("due")?`<p><b>Due:</b> ${val("due")}</p>`:""}<span class="badge">${st}</span></div>
+ </div>
+ <div class="customer">
+  <div><h4>Bill To</h4><p><b>${esc(val("customer"))||"Customer Name"}</b></p>${val("caddr")?`<p>${esc(val("caddr"))}</p>`:""}${val("cphone")?`<p>${esc(val("cphone"))}</p>`:""}${val("cemail")?`<p>${esc(val("cemail"))}</p>`:""}</div>
+  <div><h4>Tax / Customer Info</h4>${val("cgstin")?`<p>GSTIN: ${esc(val("cgstin"))}</p>`:""}${val("paymethod")?`<p>Payment: ${esc(val("paymethod"))}</p>`:""}${val("upi")?`<p>UPI: ${esc(val("upi"))}</p>`:""}${val("bank")?`<p>${esc(val("bank"))}</p>`:""}</div>
+ </div>
+ <table class="invtable"><thead><tr><th>Item</th><th>HSN/SAC</th><th class="right">Qty</th><th class="right">Rate</th><th class="right">Amount</th></tr></thead>
+ <tbody>${items.length?items.map(x=>`<tr><td>${x.img?`<img class="prodimg" src="${x.img}"> `:""}${esc(x.name)||"Unnamed Item"}</td><td>${esc(x.hsn)||"—"}</td><td class="right">${Number(x.qty)||0}</td><td class="right">${money(x.price)}</td><td class="right">${money((Number(x.qty)||0)*(Number(x.price)||0))}</td></tr>`).join(""):`<tr><td colspan="5" class="empty">Add products from the form.</td></tr>`}</tbody></table>
+ <div class="summary"><div>${val("notes")?`<div class="notes"><b>Notes / Terms</b><br>${esc(val("notes")).replace(/\n/g,"<br>")}</div>`:""}${val("paid")?`<div class="words"><b>Amount Paid:</b> ${money(c.paid)} &nbsp; <b>Pending:</b> ${money(c.pending)}</div>`:""}</div>
+ <div class="totals"><div class="tr"><span>Subtotal</span><span>${money(c.sub)}</span></div><div class="tr"><span>Discount</span><span>- ${money(c.disc)}</span></div><div class="tr"><span>Taxable Amount</span><span>${money(c.taxable)}</span></div>${taxLines}<div class="tr grand"><span>Total</span><span>${money(c.total)}</span></div></div></div>
+ <div class="words"><b>Amount in Words:</b> ${words(c.total)}</div>
+ <div class="bottom"><div class="notes">${val("upi")?`<b>Payment Information</b><br>UPI: ${esc(val("upi"))}${val("bank")?`<br>${esc(val("bank"))}`:""}`:""}</div><div class="sign">${signData?`<img src="${signData}">`:""}<div>Authorized Signature</div></div></div>
+ <div class="foot">Thank you for your business • Generated with Invoice Studio</div>`;
+}
+function renderItemsAnd(){renderItems();render()}
+function newInvoice(){
+ if(!confirm("Clear the current invoice and start a new one?"))return;
+ document.querySelectorAll("input,textarea").forEach(x=>{if(x.type!=="file")x.value=""});
+ $("date").value=today;$("type").value="Tax Invoice";$("taxmode").value="none";$("paymethod").value="";
+ items=[];logoData="";signData="";$("logoPrev").innerHTML="";$("signPrev").innerHTML="";renderItems();render()
+}
+function saveDraft(){
+ const data={fields:{},items,logoData,signData};
+ document.querySelectorAll("input,textarea,select").forEach(x=>{if(x.id&&x.type!=="file")data.fields[x.id]=x.value});
+ localStorage.setItem("invoiceStudioDraft",JSON.stringify(data));alert("Draft saved on this device.");
+}
+function loadDraft(){
+ try{const d=JSON.parse(localStorage.getItem("invoiceStudioDraft")||"null");if(!d)return;
+ Object.entries(d.fields||{}).forEach(([k,v])=>{if($(k))$(k).value=v});items=d.items||[];logoData=d.logoData||"";signData=d.signData||"";
+ if(logoData)$("logoPrev").innerHTML='<img class="preview-img" src="'+logoData+'">';if(signData)$("signPrev").innerHTML='<img class="preview-img" src="'+signData+'">';
+ }catch(e){}
+}
+document.addEventListener("input",e=>{if(e.target.closest(".editor"))render()});
+document.addEventListener("change",e=>{if(e.target.closest(".editor"))render()});
+loadDraft(); if(!items.length)addItem(); renderItems(); render();
+</script>
+</body>
+</html>
